@@ -1,0 +1,10 @@
+fastapi==0.109.0
+uvicorn==0.27.0
+supabase==2.3.0
+python-dotenv==1.0.1
+pydantic==2.6.0
+pydantic-settings==2.1.0
+requests==2.31.0
+# RPi.GPIO is usually provided by the system on Raspberry Pi, but we list it here.
+# For local dev on non-Pi, it might fail to install, so we can treat it as optional or mock it.
+# We will use a mock in the code if it fails to import.
