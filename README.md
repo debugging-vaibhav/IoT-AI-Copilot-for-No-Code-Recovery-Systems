@@ -194,54 +194,49 @@ This enables real-time monitoring, AI-assisted automation, and device control.
 📁 Raspberry Pi Client Structure
 RPI-5-Client-Code/
 │
-├── main.py
-├── config.py
-├── logger.py
+├── main.py                     ← Main entry point of Raspberry Pi client
+├── config.py                   ← Configuration settings
+├── logger.py                   ← Logging utility for system logs
 │
 ├── network/
 │   ├── __init__.py
-│   └── server_client.py
+│   └── server_client.py        ← Handles communication with IoT dashboard
 │
 ├── ai/
 │   ├── __init__.py
-│   ├── lam_engine.py
-│   ├── rag_retriever.py
-│   ├── embeddings.py
-│   └── prompt_templates.py
+│   ├── lam_engine.py           ← Local AI model execution engine
+│   ├── rag_retriever.py        ← Retrieval-Augmented Generation module
+│   ├── embeddings.py           ← Embedding generation for prompts
+│   └── prompt_templates.py     ← AI prompt templates
 │
 ├── control/
 │   ├── __init__.py
-│   ├── execution_engine.py
-│   ├── schema_validator.py
-│   └── pin_manager.py
+│   ├── execution_engine.py     ← Executes validated hardware commands
+│   ├── schema_validator.py     ← Validates AI-generated commands
+│   └── pin_manager.py          ← Manages GPIO pin states
 │
 ├── hardware/
 │   ├── __init__.py
-│   ├── gpio_controller.py
-│   ├── pwm_controller.py
-│   └── sensor_controller.py
+│   ├── gpio_controller.py      ← Controls GPIO input/output
+│   ├── pwm_controller.py       ← PWM signal control for motors/servos
+│   └── sensor_controller.py    ← Sensor data collection and management
 │
 ├── datasets/
-│   └── tools.json
+│   └── tools.json              ← AI tool definitions dataset
 │
 ├── schemas/
-│   ├── pin_state.json
-│   └── active_schemas.json
+│   ├── pin_state.json          ← GPIO pin state schema
+│   └── active_schemas.json     ← Active command schemas
 │
 ├── models/
-│   └── lam_model.gguf
+│   └── lam_model.gguf          ← Local AI model file
 │
 ├── logs/
-│   └── system.log
+│   └── system.log              ← Runtime system logs
 │
-├── requirements.txt
-├── .env
+├── requirements.txt            ← Python dependencies
+├── .env                        ← Environment variables
 └── README.md
-⚙️ Raspberry Pi Setup
-Install dependencies
-pip install -r requirements.txt
-Create environment file
-.env
 
 Example:
 
