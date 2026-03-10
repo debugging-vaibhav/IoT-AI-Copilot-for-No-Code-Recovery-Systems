@@ -182,3 +182,116 @@ Make sure `recharts` installed correctly:
 ```bash
 npm install recharts
 ```
+
+🧠 Raspberry Pi 5 Edge Client
+
+The Raspberry Pi Client runs on the edge device and connects hardware components with the IoT dashboard.
+
+It receives commands from the dashboard, processes them using a local AI model, and safely executes them on hardware devices.
+
+This enables real-time monitoring, AI-assisted automation, and device control.
+
+📁 Raspberry Pi Client Structure
+RPI-5-Client-Code/
+│
+├── main.py
+├── config.py
+├── logger.py
+│
+├── network/
+│   ├── __init__.py
+│   └── server_client.py
+│
+├── ai/
+│   ├── __init__.py
+│   ├── lam_engine.py
+│   ├── rag_retriever.py
+│   ├── embeddings.py
+│   └── prompt_templates.py
+│
+├── control/
+│   ├── __init__.py
+│   ├── execution_engine.py
+│   ├── schema_validator.py
+│   └── pin_manager.py
+│
+├── hardware/
+│   ├── __init__.py
+│   ├── gpio_controller.py
+│   ├── pwm_controller.py
+│   └── sensor_controller.py
+│
+├── datasets/
+│   └── tools.json
+│
+├── schemas/
+│   ├── pin_state.json
+│   └── active_schemas.json
+│
+├── models/
+│   └── lam_model.gguf
+│
+├── logs/
+│   └── system.log
+│
+├── requirements.txt
+├── .env
+└── README.md
+⚙️ Raspberry Pi Setup
+Install dependencies
+pip install -r requirements.txt
+Create environment file
+.env
+
+Example:
+
+SERVER_URL=http://localhost:3000
+DEVICE_ID=rpi-5-001
+LOG_LEVEL=INFO
+Run the client
+python main.py
+
+The client will:
+
+Connect to the IoT dashboard
+
+Start the AI command processor
+
+Monitor sensors
+
+Control GPIO pins
+
+🤖 AI System Architecture
+Module	Purpose
+LAM Engine	Runs the local AI model
+RAG Retriever	Retrieves tool instructions
+Embeddings	Converts prompts into vectors
+Schema Validator	Ensures safe hardware commands
+Execution Engine	Executes validated actions
+🔧 Hardware Control Capabilities
+
+Supported operations:
+
+GPIO pin control
+
+PWM motor control
+
+Sensor data monitoring
+
+AI-driven automation
+
+Remote device commands
+
+🔧 Python Dependencies
+
+Main libraries:
+
+python-dotenv
+requests
+numpy
+gpiozero
+RPi.GPIO
+
+Install with:
+
+pip install -r requirements.txt
