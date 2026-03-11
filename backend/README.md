@@ -71,7 +71,7 @@ create table system_status (
 ## API Usage Example
 
 **1. Describe Robot**
-POST `/api/describe-robot`
+POST `/api/describe-Robot`
 ```json
 {
   "description": "Turn ON the fan connected to pin 17"
