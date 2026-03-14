@@ -238,7 +238,6 @@ RPI-5-Client-Code/
 ├── requirements.txt            ← Python dependencies
 ├── .env                        ← Environment variables
 └── README.md                   ← Project documentation
-'''
 
 Example:
 
