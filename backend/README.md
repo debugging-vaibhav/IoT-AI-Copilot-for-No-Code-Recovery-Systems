@@ -1,20 +1,22 @@
 # IoT AI Copilot for No-Code Recovery Systems
 
 ## Overview
-This is the backend for the "IoT AI Copilot" project. It provides a REST API to interpret natural language commands, generate control logic via AI, validate it for safety, and apply it to Raspberry Pi GPIO pins.
+This is the backend for the "ioT AI Copilot" project. It provides a REST API to interpret natural language commands, generate control logic via AI, validate it for safety, and apply it to Raspberry Pi GPIO pins.
 
 ## Tech Stack
 - **Language**: Python 3.9+
 - **Framework**: FastAPI
 - **Database**: Supabase (PostgreSQL)
 - **Auth**: Supabase Auth (JWT)
-- **Hardware**: Raspberry Pi (RPi.GPIO)
+
+## Application Responsibilities
+
+**Important Note:** This repository contains **ONLY** the backend services. All hardware-specific code, including Raspberry Pi drivers and GPIO controls, have been separated into a dedicated IoT hardware module managed by the hardware team. The backend communicates with the hardware layer using a decoupled `iot_interface.py` service.
 
 ## Setup Instructions
 
 ### 1. Prerequisites
 - Python 3.9 installed
-- Raspberry Pi (optional, code mocks GPIO if not present)
 - Supabase account
 
 ### 2. Environment Setup
@@ -71,7 +73,7 @@ create table system_status (
 ## API Usage Example
 
 **1. Describe Robot**
-POST `/api/describe-Robot`
+POST `/api/describe-robot`
 ```json
 {
   "description": "Turn ON the fan connected to pin 17"

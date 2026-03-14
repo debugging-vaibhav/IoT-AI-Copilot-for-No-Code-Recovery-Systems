@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+import logging
+
+logger = logging.getLogger("uvicorn")
 from app.core.config import settings
 from app.api import routes
-from app.iot.gpio_controller import gpio_manager
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -28,12 +30,11 @@ app.include_router(routes.router, prefix=settings.API_V1_STR)
 
 @app.on_event("startup")
 def startup_event():
-    # Initialize GPIO
-    gpio_manager.setup_board()
+    logger.info("Starting up IoT AI Copilot Backend...")
 
 @app.on_event("shutdown")
 def shutdown_event():
-    gpio_manager.cleanup()
+    logger.info("Shutting down IoT AI Copilot Backend...")
 
 if __name__ == "__main__":
     import uvicorn

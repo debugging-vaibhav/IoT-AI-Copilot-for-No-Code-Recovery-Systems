@@ -1,6 +1,6 @@
 from app.services.ai_copilot import ai_service
 from app.services.validator import validator
-from app.iot.gpio_controller import gpio_manager
+from app.services.iot_interface import iot_interface
 from app.db.queries import log_recovery_attempt, save_robot_config, update_system_status
 from app.models.schemas import ValidationResult, ControlLogic
 
@@ -35,16 +35,10 @@ class RecoveryEngine:
         # Save Config to DB
         save_robot_config(logic)
         
-        # Execute Hardware Action
-        success = False
-        if logic.action.upper() == "ON":
-            success = gpio_manager.activate_pin(logic.pin)
-        elif logic.action.upper() == "OFF":
-            success = gpio_manager.deactivate_pin(logic.pin)
-        else:
-            # Default fallback for "motor_control" etc in this simple demo
-            # We treat it as ON for demo
-            success = gpio_manager.activate_pin(logic.pin)
+        # Execute Hardware Action (via abstract interface)
+        # Using a unified send_command method instead of direct pin activation
+        # A mapped action logic is preferred, but for now we'll rely on the logic action logic
+        success = iot_interface.send_command(pin=logic.pin, action=logic.action)
 
         if success:
             update_system_status(f"ACTIVE: Pin {logic.pin} set to {logic.action}")
@@ -53,6 +47,6 @@ class RecoveryEngine:
         else:
             update_system_status("ERROR")
             log_recovery_attempt("ERROR", f"Failed to apply logic on Pin {logic.pin}")
-            return {"success": False, "message": "GPIO Hardware Failure"}
+            return {"success": False, "message": "IoT Communication Failure"}
 
 recovery_system = RecoveryEngine()

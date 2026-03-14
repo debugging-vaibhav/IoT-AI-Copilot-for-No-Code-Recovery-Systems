@@ -11,11 +11,7 @@ class Settings(BaseSettings):
     SUPABASE_KEY: str = os.getenv("SUPABASE_KEY", "")
     SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET", "")  # For verifying tokens if needed locally
 
-    # OpenAI
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
-
-    # Hardware
-    SIMULATE_HARDWARE: bool = os.getenv("SIMULATE_HARDWARE", "False").lower() == "true"
 
     class Config:
         env_file = ".env"
