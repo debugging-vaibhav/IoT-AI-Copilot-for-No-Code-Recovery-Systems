@@ -191,7 +191,7 @@ It receives commands from the dashboard, processes them using a local AI model, 
 
 This enables real-time monitoring, AI-assisted automation, and device control.
 
-'''
+```
 📁 Raspberry Pi Client Structure
 RPI-5-Client-Code/
 │
@@ -238,7 +238,7 @@ RPI-5-Client-Code/
 ├── requirements.txt            ← Python dependencies
 ├── .env                        ← Environment variables
 └── README.md                   ← Project documentation
-'''
+```
 
 Example:
 
