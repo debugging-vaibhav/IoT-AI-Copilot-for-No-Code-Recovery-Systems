@@ -12,7 +12,7 @@ class RobotDescription(BaseModel):
     )
 
 class ControlLogic(BaseModel):
-    sensor: str = Field(..., example="temperature")
+    sensor: Optional[str] = Field(None, example="temperature")
     pin: int = Field(..., example=17)
     action: str = Field(..., example="ON")
     rule: str = Field(..., example="IF temperature > 30 THEN ON")
