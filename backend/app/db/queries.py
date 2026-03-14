@@ -5,13 +5,16 @@ import logging
 
 logger = logging.getLogger("uvicorn")
 
+class DatabaseConnectionError(Exception):
+    pass
+
 def log_recovery_attempt(status: str, description: str):
     """
     Logs a recovery attempt to the 'recovery_logs' table.
     """
     if supabase is None:
         logger.warning("Supabase not configured. Skipping log_recovery_attempt.")
-        return
+        raise DatabaseConnectionError("Supabase connection unavailable")
     try:
         data = {
             "status": status,
@@ -20,7 +23,8 @@ def log_recovery_attempt(status: str, description: str):
         }
         supabase.table("recovery_logs").insert(data).execute()
     except Exception as e:
-        print(f"Error logging to Supabase: {e}")
+        logger.error(f"Error logging to Supabase: {e}")
+        raise DatabaseConnectionError(f"Error logging to Supabase: {str(e)}")
 
 def save_robot_config(logic: ControlLogic):
     """
@@ -28,7 +32,7 @@ def save_robot_config(logic: ControlLogic):
     """
     if supabase is None:
         logger.warning("Supabase not configured. Skipping save_robot_config.")
-        return
+        raise DatabaseConnectionError("Supabase connection unavailable")
     try:
         data = {
             "sensor": logic.sensor,
@@ -39,18 +43,16 @@ def save_robot_config(logic: ControlLogic):
         }
         supabase.table("robot_config").insert(data).execute()
     except Exception as e:
-        print(f"Error saving config to Supabase: {e}")
+        logger.error(f"Error saving config to Supabase: {e}")
+        raise DatabaseConnectionError(f"Error saving config to Supabase: {str(e)}")
 
 def update_system_status(state: str):
     """
-    Updates the 'system_status' table. 
-    Assumes a single row for simple global status, or inserts new one.
-    Here we'll insert a new status to keep history, or update the latest if ID=1 is reserved.
-    Let's just insert for simplicity log style.
+    Updates the 'system_status' table.
     """
     if supabase is None:
         logger.warning("Supabase not configured. Skipping update_system_status.")
-        return
+        raise DatabaseConnectionError("Supabase connection unavailable")
     try:
         data = {
             "state": state,
@@ -58,7 +60,8 @@ def update_system_status(state: str):
         }
         supabase.table("system_status").insert(data).execute()
     except Exception as e:
-        print(f"Error updating system status: {e}")
+        logger.error(f"Error updating system status: {e}")
+        raise DatabaseConnectionError(f"Error updating system status: {str(e)}")
 
 def get_recovery_logs():
     """
@@ -66,11 +69,11 @@ def get_recovery_logs():
     """
     if supabase is None:
         logger.warning("Supabase not configured. Returning empty logs.")
-        return []
+        raise DatabaseConnectionError("Supabase connection unavailable")
     try:
         response = supabase.table("recovery_logs").select("*").order("timestamp", desc=True).limit(50).execute()
         return response.data
     except Exception as e:
-        print(f"Error fetching logs: {e}")
-        return []
+        logger.error(f"Error fetching logs: {e}")
+        raise DatabaseConnectionError(f"Error fetching logs: {str(e)}")
 

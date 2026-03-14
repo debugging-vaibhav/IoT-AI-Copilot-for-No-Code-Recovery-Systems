@@ -13,6 +13,39 @@ This is the backend for the "ioT AI Copilot" project. It provides a REST API to 
 
 **Important Note:** This repository contains **ONLY** the backend services. All hardware-specific code, including Raspberry Pi drivers and GPIO controls, have been separated into a dedicated IoT hardware module managed by the hardware team. The backend communicates with the hardware layer using a decoupled `iot_interface.py` service.
 
+## Hardware Integration Guide
+
+The backend sends HTTP requests to the IoT hardware layer. The hardware team must implement a service (e.g., Flask on Raspberry Pi) listening at the `IOT_SERVICE_URL` (default: `http://raspberrypi:5000`).
+
+The service must implement the following two endpoints:
+
+**1. Execute Command (`POST /execute`)**
+Triggers a hardware action on a specific pin.
+*Request Example:*
+```json
+{
+  "pin": 17,
+  "action": "on"
+}
+```
+*Expected Response (`200 OK`):*
+```json
+{
+  "success": true,
+  "message": "Action 'on' executed on pin 17"
+}
+```
+
+**2. Get Status (`GET /status`)**
+Returns the current health and status of the hardware.
+*Expected Response (`200 OK`):*
+```json
+{
+  "status": "ACTIVE",
+  "hardware": "ONLINE"
+}
+```
+
 ## Setup Instructions
 
 ### 1. Prerequisites

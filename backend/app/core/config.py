@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     SUPABASE_JWT_SECRET: str = os.getenv("SUPABASE_JWT_SECRET", "")  # For verifying tokens if needed locally
 
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
+    IOT_SERVICE_URL: str = os.getenv("IOT_SERVICE_URL", "http://raspberrypi:5000")
 
     class Config:
         env_file = ".env"

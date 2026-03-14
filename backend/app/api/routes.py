@@ -5,7 +5,7 @@ from app.models.schemas import (
 )
 from app.services.recovery_engine import recovery_system
 from app.services.validator import validator
-from app.db.queries import get_recovery_logs
+from app.db.queries import get_recovery_logs, DatabaseConnectionError
 from app.core.auth import get_current_user
 
 router = APIRouter()
@@ -67,4 +67,7 @@ def apply_recovery(request: ExecutionRequest, user=Depends(get_current_user)):
 
 @router.get("/logs")
 def get_logs(user=Depends(get_current_user)):
-    return get_recovery_logs()
+    try:
+        return get_recovery_logs()
+    except DatabaseConnectionError as e:
+        raise HTTPException(status_code=503, detail=str(e))
