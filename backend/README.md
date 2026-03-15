@@ -13,38 +13,100 @@ This is the backend for the "ioT AI Copilot" project. It provides a REST API to 
 
 **Important Note:** This repository contains **ONLY** the backend services. All hardware-specific code, including Raspberry Pi drivers and GPIO controls, have been separated into a dedicated IoT hardware module managed by the hardware team. The backend communicates with the hardware layer using a decoupled `iot_interface.py` service.
 
+## Backend Architecture
+
+The backend repository is structured to separate concerns, ensuring scalable and maintainable code.
+
+```text
+backend/
+ ├── app/
+ │   ├── main.py
+ │   ├── api/routes.py
+ │   ├── core/config.py
+ │   ├── core/auth.py
+ │   ├── models/schemas.py
+ │   ├── services/
+ │   │    ├── ai_copilot.py
+ │   │    ├── validator.py
+ │   │    ├── recovery_engine.py
+ │   │    └── iot_interface.py
+ │   ├── db/
+ │   │    ├── supabase_client.py
+ │   │    └── queries.py
+ │
+ ├── verify_endpoints.py
+ ├── test_api_keys.py
+ ├── requirements.txt
+ └── README.md
+```
+
+- **`app/main.py`**: The entry point for the FastAPI application. Confugures CORS and includes API routers.
+- **`app/api/routes.py`**: Contains all REST API endpoint definitions.
+- **`app/core/`**: Handles application configuration (environment variables) and authentication (JWT).
+- **`app/models/schemas.py`**: Defines Pydantic data models for request and response validation.
+- **`app/services/`**: The core business logic layer.
+  - `ai_copilot.py`: Parses natural language descriptions generating theoretical control logic.
+  - `validator.py`: Ensures the generated logic is safe before hardware execution.
+  - `recovery_engine.py`: Orchestrates the flow from description to validation and applies changes via the interface.
+  - `iot_interface.py`: The HTTP client that communicates with the external IoT hardware service.
+- **`app/db/`**: Handles Supabase database connections and queries.
+- **`verify_endpoints.py`**: A test script to verify API health without needing actual hardware or frontend.
+- **`test_api_keys.py`**: A test script to verify integrations.
+
+## Backend Program Flow
+
+The system processes a frontend request through several modules before culminating in hardware execution and database logging. The complete flow is:
+
+**Frontend** → **FastAPI router** → **AI Copilot** → **Validator** → **Recovery Engine** → **IoT Interface** → **Raspberry Pi Hardware Service** → **Supabase Logging** → **API Response**.
+
+```text
+Frontend
+   |
+FastAPI API routes
+   |
+AI Copilot
+   |
+Validator
+   |
+Recovery Engine
+   |
+IoT Interface
+   |
+Hardware Service (Raspberry Pi)
+   |
+Supabase Logging
+   |
+Response to Frontend
+```
+
 ## Hardware Integration Guide
 
-The backend sends HTTP requests to the IoT hardware layer. The hardware team must implement a service (e.g., Flask on Raspberry Pi) listening at the `IOT_SERVICE_URL` (default: `http://raspberrypi:5000`).
+The IoT teammate must implement a hardware service exposing:
 
-The service must implement the following two endpoints:
+**POST /execute**
+**GET /status**
 
-**1. Execute Command (`POST /execute`)**
-Triggers a hardware action on a specific pin.
-*Request Example:*
+Example request:
+
 ```json
+POST /execute
 {
   "pin": 17,
-  "action": "on"
-}
-```
-*Expected Response (`200 OK`):*
-```json
-{
-  "success": true,
-  "message": "Action 'on' executed on pin 17"
+  "action": "ON"
 }
 ```
 
-**2. Get Status (`GET /status`)**
-Returns the current health and status of the hardware.
-*Expected Response (`200 OK`):*
-```json
-{
-  "status": "ACTIVE",
-  "hardware": "ONLINE"
-}
-```
+## Frontend Integration Guide
+
+The frontend should call these endpoints:
+
+- `GET /api/health`
+- `GET /api/status`
+- `POST /api/describe-robot`
+- `POST /api/generate-logic`
+- `POST /api/validate`
+- `POST /api/recover`
+- `GET /api/logs`
 
 ## Setup Instructions
 
