@@ -11,7 +11,7 @@ This is the backend for the "ioT AI Copilot" project. It provides a REST API to 
 
 ## Application Responsibilities
 
-**Important Note:** This repository contains **ONLY** the backend services. All hardware-specific code, including Raspberry Pi drivers and GPIO controls, have been separated into a dedicated IoT hardware module managed by the hardware team. The backend communicates with the hardware layer using a decoupled `iot_interface.py` service.
+**Important Note:** This repository contains **ONLY** the backend services. All hardware-specific code, including Raspberry Pi drivers and GPIO controls, have been separated into a dedicated IoT hardware module. The backend communicates with the hardware layer using a decoupled `iot_interface.py` service.
 
 ## Backend Architecture
 
@@ -81,7 +81,7 @@ Response to Frontend
 
 ## Hardware Integration Guide
 
-The IoT teammate must implement a hardware service exposing:
+The hardware implementation must expose a service with paths:
 
 **POST /execute**
 **GET /status**
