@@ -132,6 +132,9 @@ Outputs optimized static files to the `build/` folder.
 - **Recharts** — all chart visualizations
 - **DM Sans** (Google Fonts) — typography
 - **Inline styles** — zero CSS dependencies
+- 🌗 Dark/Light Mode  
+Implemented a dynamic theme switcher allowing users to toggle between dark and light modes.  
+Ensures improved accessibility and visual consistency across all tabs including Monitoring, AI Copilot, and Analytics.
 
 ---
 
