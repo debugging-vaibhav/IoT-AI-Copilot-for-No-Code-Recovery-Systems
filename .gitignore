@@ -1,5 +1,4 @@
-*.env
-*.txt
-/RPI5-Client-Code/logs/*
-
-/venv/*
+AI-LAM-server/models/
+venv/
+node_modules/
+.env

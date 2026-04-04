@@ -1,0 +1,126 @@
+2026-03-31 14:21:43,004 [WARNING] rpi-client: RPi.GPIO not available — falling back to simulation
+2026-03-31 14:21:43,011 [INFO] rpi-client: Starting Flask server...
+2026-03-31 14:21:43,035 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.153:5000
+2026-03-31 14:21:43,042 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-03-31 14:21:44,042 [INFO] rpi-client: Registering with backend...
+2026-03-31 14:21:44,043 [INFO] rpi-client: Starting heartbeat loop...
+2026-03-31 14:21:44,044 [INFO] rpi-client: RPi client is running. Press Ctrl+C to stop.
+2026-03-31 14:21:46,679 [INFO] rpi-client: Shutting down RPi client...
+2026-03-31 14:42:47,246 [WARNING] rpi-client: RPi.GPIO not available — falling back to simulation
+2026-03-31 14:42:47,254 [INFO] rpi-client: Starting Flask server...
+2026-03-31 14:42:47,267 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.153:5000
+2026-03-31 14:42:47,286 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-03-31 14:42:48,286 [INFO] rpi-client: Registering with backend...
+2026-03-31 14:42:48,286 [INFO] rpi-client: Starting heartbeat loop...
+2026-03-31 14:42:48,288 [INFO] rpi-client: RPi client is running. Press Ctrl+C to stop.
+2026-03-31 14:42:53,303 [WARNING] rpi-client: Cannot reach backend at http://192.168.1.100:8000, retrying in 5s...
+2026-03-31 14:42:53,303 [WARNING] rpi-client: Heartbeat failed — backend unreachable
+2026-03-31 14:42:58,242 [INFO] rpi-client: Shutting down RPi client...
+2026-03-31 14:43:17,114 [WARNING] rpi-client: RPi.GPIO not available — falling back to simulation
+2026-03-31 14:43:17,119 [INFO] rpi-client: Starting Flask server...
+2026-03-31 14:43:17,130 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.29.153:5000
+2026-03-31 14:43:17,131 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-03-31 14:43:18,125 [INFO] rpi-client: Registering with backend...
+2026-03-31 14:43:18,126 [INFO] rpi-client: Starting heartbeat loop...
+2026-03-31 14:43:18,127 [INFO] rpi-client: RPi client is running. Press Ctrl+C to stop.
+2026-03-31 14:43:32,748 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:43:32] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:43:32,753 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:43:32] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:43:37,612 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:43:37] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:44:08,297 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:44:08] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:44:15,060 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:44:15] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:44:15,074 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:44:15] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:44:17,605 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:44:17] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:44:22,614 [INFO] werkzeug: 192.168.29.153 - - [31/Mar/2026 14:44:22] "GET /status HTTP/1.1" 200 -
+2026-03-31 14:44:24,357 [INFO] rpi-client: Shutting down RPi client...
+2026-04-01 14:44:12,308 [WARNING] rpi-client: RPi.GPIO not available — falling back to simulation
+2026-04-01 14:44:12,320 [INFO] rpi-client: Starting Flask server...
+2026-04-01 14:44:12,371 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.18.9.147:5000
+2026-04-01 14:44:12,402 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-04-01 14:44:13,403 [INFO] rpi-client: Registering with backend...
+2026-04-01 14:44:13,404 [INFO] rpi-client: Starting heartbeat loop...
+2026-04-01 14:44:13,407 [INFO] rpi-client: RPi client is running. Press Ctrl+C to stop.
+2026-04-01 14:46:11,326 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:11] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:11,358 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:11] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:16,034 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:16] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:21,005 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:21] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:26,018 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:26] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:31,012 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:31] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:36,011 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:36] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:41,033 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:41] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:46,010 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:46:46] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:46:47,274 [INFO] rpi-client: Shutting down RPi client...
+2026-04-01 14:47:25,867 [WARNING] rpi-client: RPi.GPIO not available — falling back to simulation
+2026-04-01 14:47:25,874 [INFO] rpi-client: Starting Flask server...
+2026-04-01 14:47:25,894 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.18.9.147:5000
+2026-04-01 14:47:25,894 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-04-01 14:47:26,302 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:47:26] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:47:26,885 [INFO] rpi-client: Registering with backend...
+2026-04-01 14:47:26,886 [INFO] rpi-client: Starting heartbeat loop...
+2026-04-01 14:47:26,889 [INFO] rpi-client: RPi client is running. Press Ctrl+C to stop.
+2026-04-01 14:47:31,033 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:47:31] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:47:36,024 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:47:36] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:47:41,010 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:47:41] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:47:46,034 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:47:46] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:47:51,038 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:47:51] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:47:56,033 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:47:56] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:48:01,028 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:48:01] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:48:06,009 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:48:06] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:48:11,039 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:48:11] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:48:16,027 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:48:16] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:48:21,035 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:48:21] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:52:57,384 [INFO] rpi-client: Shutting down RPi client...
+2026-04-01 14:53:03,665 [WARNING] rpi-client: RPi.GPIO not available — falling back to simulation
+2026-04-01 14:53:03,673 [INFO] rpi-client: Starting Flask server...
+2026-04-01 14:53:03,723 [INFO] werkzeug: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.18.9.147:5000
+2026-04-01 14:53:03,725 [INFO] werkzeug: [33mPress CTRL+C to quit[0m
+2026-04-01 14:53:04,725 [INFO] rpi-client: Registering with backend...
+2026-04-01 14:53:04,726 [INFO] rpi-client: Starting heartbeat loop...
+2026-04-01 14:53:04,729 [INFO] rpi-client: RPi client is running. Press Ctrl+C to stop.
+2026-04-01 14:57:32,886 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:57:32] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:57:32,912 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:57:32] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:57:36,007 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:57:36] "GET /status HTTP/1.1" 200 -
+2026-04-01 14:57:41,032 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 14:57:41] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:03,187 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:03] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:03,219 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:03] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:03,250 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:03] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:06,029 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:06] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:11,307 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:11] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:16,264 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:16] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:21,309 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:21] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:26,037 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:26] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:31,019 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:31] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:36,033 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:36] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:41,033 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:41] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:46,026 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:46] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:51,027 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:51] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:12:56,037 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:12:56] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:01,031 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:01] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:06,028 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:06] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:11,024 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:11] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:16,007 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:16] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:21,621 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:21] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:26,035 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:26] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:31,036 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:31] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:36,306 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:36] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:41,299 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:41] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:46,305 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:46] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:51,307 [INFO] werkzeug: 10.18.9.147 - - [01/Apr/2026 15:13:51] "GET /status HTTP/1.1" 200 -
+2026-04-01 15:13:52,086 [INFO] rpi-client: Shutting down RPi client...
