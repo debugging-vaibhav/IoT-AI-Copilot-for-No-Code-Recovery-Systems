@@ -6,7 +6,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://iot-copilot-backend.onrender.com/api/:path*"
+      "destination": "https://iot-ai-copilot-for-no-code-recovery.onrender.com/api/:path*"
     }
   ]
 }
