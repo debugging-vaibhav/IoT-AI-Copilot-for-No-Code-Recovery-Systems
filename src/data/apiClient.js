@@ -6,7 +6,7 @@
  */
 
 const BACKEND_URL =
-  process.env.REACT_APP_BACKEND_URL || "http://localhost:8000/api";
+  process.env.REACT_APP_BACKEND_URL || "/api";
 
 async function apiFetch(path, options = {}) {
   const url = `${BACKEND_URL}${path}`;

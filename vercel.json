@@ -3,5 +3,10 @@
   "buildCommand": "npm run build",
   "outputDirectory": "build",
   "installCommand": "npm install",
-  "ignoreCommand": "exit 0"
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://iot-copilot-backend.onrender.com/api/:path*"
+    }
+  ]
 }
