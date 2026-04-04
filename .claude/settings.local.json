@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -X POST http://localhost:8100/process -H \"Content-Type: application/json\" -d '{\"\"description\"\": \"\"Set servo on pin 13 to 0 degrees\"\"}')",
+      "Bash(curl -s -X POST http://localhost:8100/process -H \"Content-Type: application/json\" -d '{\"\"description\"\": \"\"Set servo on pin 13 to 180 degrees\"\"}')"
+    ]
+  }
+}

@@ -8,12 +8,8 @@ export function StatusBadge({ status }) {
   const s = STATUS_STYLES[status] || STATUS_STYLES.online;
   return (
     <span style={{
-      background: s.bg,
-      color: s.color,
-      padding: "2px 10px",
-      borderRadius: 20,
-      fontSize: 12,
-      fontWeight: 600,
+      background: s.bg, color: s.color, padding: "2px 10px",
+      borderRadius: 20, fontSize: 12, fontWeight: 600,
     }}>
       {status}
     </span>
@@ -25,13 +21,8 @@ export function StatusDot({ status }) {
   const c = colors[status] || "#22c55e";
   return (
     <span style={{
-      width: 10,
-      height: 10,
-      borderRadius: "50%",
-      background: c,
-      display: "inline-block",
-      flexShrink: 0,
-      boxShadow: `0 0 0 3px ${c}33`,
+      width: 10, height: 10, borderRadius: "50%", background: c,
+      display: "inline-block", flexShrink: 0, boxShadow: `0 0 0 3px ${c}33`,
     }} />
   );
 }

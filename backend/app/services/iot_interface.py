@@ -1,45 +1,62 @@
+"""
+IoT Interface — communicates with the RPi hardware layer via HTTP.
+Now uses the device registry to find the RPi dynamically.
+"""
 import logging
 import requests
 from app.core.config import settings
+from app.services.device_registry import get_primary_device_url
 
 logger = logging.getLogger("uvicorn")
 
+
 class IoTInterface:
-    """
-    Placeholder service layer for interacting with IoT hardware.
-    In a real implementation, these methods would communicate with the IoT
-    devices via APIs, message queues (like MQTT), or WebSockets.
-    """
-    
-    def send_command(self, pin: int, action: str) -> bool:
-        """
-        Sends a command to the IoT hardware layer via HTTP POST.
-        """
-        logger.info(f"IoT Interface: Sending command '{action}' to pin {pin}")
-        
+
+    def _get_device_url(self) -> str:
+        """Get the URL of the connected RPi device."""
+        # First try the device registry (dynamic)
+        url = get_primary_device_url()
+        if url:
+            return url
+        # Fall back to config
+        logger.warning("No registered device found, using fallback IOT_SERVICE_URL")
+        return settings.IOT_SERVICE_URL
+
+    def send_command(self, pin: int, action: str, angle: float | None = None) -> bool:
+        """Send a command to the RPi hardware layer via HTTP POST."""
+        device_url = self._get_device_url()
+        logger.info(f"IoT Interface: Sending '{action}' to pin {pin} via {device_url}")
+
+        payload = {"pin": pin, "action": action.lower()}
+        if angle is not None:
+            payload["angle"] = angle
+
         try:
-            response = requests.post(f"{settings.IOT_SERVICE_URL}/execute", json={
-                "pin": pin,
-                "action": action.lower()
-            }, timeout=5)
+            response = requests.post(f"{device_url}/execute", json=payload, timeout=5)
             response.raise_for_status()
-            logger.info("IoT Interface: Command sent successfully.")
-            return True
+            data = response.json()
+            logger.info(f"IoT Interface: Response — {data}")
+            return data.get("success", True)
         except requests.exceptions.RequestException as e:
-            logger.error(f"IoT Interface Error: Could not reach hardware service at {settings.IOT_SERVICE_URL}. {e}")
+            logger.error(f"IoT Interface Error: Could not reach {device_url}. {e}")
             return False
 
     def get_device_status(self) -> dict:
-        """
-        Retrieves the current status of the connected IoT devices via HTTP GET.
-        """
-        logger.info("IoT Interface: Fetching device status")
+        """Fetch live status from the RPi."""
+        device_url = self._get_device_url()
+        logger.info(f"IoT Interface: Fetching status from {device_url}")
+
         try:
-            response = requests.get(f"{settings.IOT_SERVICE_URL}/status", timeout=5)
+            response = requests.get(f"{device_url}/status", timeout=5)
             response.raise_for_status()
             return response.json()
         except requests.exceptions.RequestException as e:
-            logger.warning(f"IoT Interface Error: Could not fetch status from hardware service. {e}")
-            return {"status": "ERROR", "hardware": "OFFLINE", "details": str(e)}
+            logger.warning(f"IoT Interface: Could not fetch status. {e}")
+            return {
+                "status": "UNREACHABLE",
+                "hardware": "OFFLINE",
+                "error": str(e),
+            }
+
 
 iot_interface = IoTInterface()

@@ -1,71 +1,27 @@
-export const UPTIME_DATA = [
-  { time: "00:00", value: 95.2 },
-  { time: "04:00", value: 97.8 },
-  { time: "08:00", value: 92.1 },
-  { time: "12:00", value: 96.5 },
-  { time: "16:00", value: 98.2 },
-  { time: "20:00", value: 96.8 },
-  { time: "24:00", value: 97.1 },
-];
-
-export const RECOVERY_DATA = [
-  { month: "Jul", successful: 45, failed: 3 },
-  { month: "Aug", successful: 52, failed: 2 },
-  { month: "Sep", successful: 49, failed: 4 },
-  { month: "Oct", successful: 61, failed: 1 },
-  { month: "Nov", successful: 58, failed: 2 },
-  { month: "Dec", successful: 65, failed: 1 },
-  { month: "Jan", successful: 72, failed: 2 },
-];
-
-export const TEMP_DATA = [
-  { time: "00:00", value: 23 },
-  { time: "04:00", value: 22 },
-  { time: "08:00", value: 24.5 },
-  { time: "12:00", value: 25 },
-  { time: "16:00", value: 31.5 },
-  { time: "20:00", value: 26 },
-  { time: "24:00", value: 23.5 },
-];
-
-export const DEVICE_DIST = [
-  { name: "Environmental", value: 40, color: "#6366f1" },
-  { name: "Industrial",    value: 25, color: "#8b5cf6" },
-  { name: "Security",      value: 20, color: "#10b981" },
-  { name: "Actuators",     value: 15, color: "#f59e0b" },
-];
-
-export const KPI_CARDS = [
-  {
-    label: "Avg Uptime",
-    value: "96.8%",
-    change: "+2.3%",
-    up: true,
-    iconBg: "#dcfce7",
-    iconColor: "#22c55e",
-  },
-  {
-    label: "Recovery Rate",
-    value: "97.2%",
-    change: "+1.8%",
-    up: true,
-    iconBg: "#ede9fe",
-    iconColor: "#7c3aed",
-  },
-  {
-    label: "Avg Recovery Time",
-    value: "2.4 min",
-    change: "-0.5 min",
-    up: false,
-    iconBg: "#f3e8ff",
-    iconColor: "#a855f7",
-  },
-  {
-    label: "Active Workflows",
-    value: "12",
-    change: "+3 new",
-    up: true,
-    iconBg: "#ffedd5",
-    iconColor: "#f59e0b",
-  },
-];
+export const ANALYTICS_DATA = {
+  metrics: [
+    { label: "Total Recoveries", value: "247", change: "+12% this week", changeType: "positive" },
+    { label: "Success Rate", value: "94.2%", change: "+2.1% vs last month", changeType: "positive" },
+    { label: "Avg Recovery Time", value: "3.2s", change: "-0.8s improvement", changeType: "positive" },
+    { label: "Active Alerts", value: "3", change: "+1 since yesterday", changeType: "negative" },
+  ],
+  weeklyRecoveries: [
+    { label: "Mon", value: 32 },
+    { label: "Tue", value: 28 },
+    { label: "Wed", value: 45 },
+    { label: "Thu", value: 38 },
+    { label: "Fri", value: 52 },
+    { label: "Sat", value: 18 },
+    { label: "Sun", value: 12 },
+  ],
+  recentLogs: [
+    { time: "14:32:01", event: "Auto-recovery triggered", device: "Motor Driver", status: "Success" },
+    { time: "14:28:45", event: "Temperature warning", device: "Motor Driver", status: "Warning" },
+    { time: "14:15:22", event: "Sensor recalibrated", device: "IMU Module", status: "Success" },
+    { time: "13:58:10", event: "Connection lost", device: "LiDAR Sensor", status: "Failed" },
+    { time: "13:45:33", event: "Firmware updated", device: "GPS Module", status: "Success" },
+    { time: "13:30:00", event: "Heartbeat received", device: "RPi 5 Controller", status: "Success" },
+    { time: "12:55:18", event: "PID values adjusted", device: "Flight Controller", status: "Success" },
+    { time: "12:40:05", event: "Battery low warning", device: "Power Module", status: "Warning" },
+  ],
+};
