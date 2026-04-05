@@ -1,5 +1,3 @@
 requests==2.31.0
 python-dotenv==1.0.1
-
-# Only needed on real Raspberry Pi hardware (not on laptop for testing):
-# RPi.GPIO==0.7.1
+gpiozero>=2.0
