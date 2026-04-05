@@ -56,7 +56,7 @@ class RecoveryEngine:
                 log_recovery_attempt("ERROR", f"Failed to apply logic on Pin {logic.pin}")
             except DatabaseConnectionError:
                 pass
-            return {"success": False, "message": "IoT Communication Failure. RPi device is unreachable."}
+            return {"success": False, "message": "No online RPi device available to receive commands."}
 
 
 recovery_system = RecoveryEngine()

@@ -1,36 +1,31 @@
 """
 IoT AI Copilot — Raspberry Pi 5 Edge Client
 =============================================
-Entry point. Starts the Flask server, registers with the backend,
-and runs a heartbeat loop to keep the connection alive.
+Entry point. Registers with the backend, then runs a loop
+that polls for commands and sends heartbeats.
 """
 import time
 import threading
-import requests
-from config import SERVER_URL, DEVICE_ID, RPI_PORT
+from config import SERVER_URL, DEVICE_ID
 from logger import logger
-from network.server_client import start_server, register_with_backend
+from network.server_client import register_with_backend, poll_commands, send_heartbeat
+
+POLL_INTERVAL = 2   # seconds between command polls
+HEARTBEAT_INTERVAL = 10  # seconds between heartbeats
 
 
 def heartbeat_loop():
-    """Send periodic heartbeat to backend so it knows we're alive."""
-    heartbeat_url = f"{SERVER_URL}/api/device/heartbeat"
+    """Send periodic heartbeat with device state to the backend."""
     while True:
-        try:
-            resp = requests.post(heartbeat_url, json={
-                "device_id": DEVICE_ID,
-                "status": "ONLINE",
-            }, timeout=5)
-            if resp.status_code == 200:
-                logger.debug("Heartbeat sent OK")
-            else:
-                logger.warning(f"Heartbeat returned {resp.status_code}")
-        except requests.exceptions.ConnectionError:
-            logger.warning("Heartbeat failed — backend unreachable")
-        except Exception as e:
-            logger.error(f"Heartbeat error: {e}")
+        send_heartbeat()
+        time.sleep(HEARTBEAT_INTERVAL)
 
-        time.sleep(10)
+
+def command_poll_loop():
+    """Poll the backend for pending commands and execute them."""
+    while True:
+        poll_commands()
+        time.sleep(POLL_INTERVAL)
 
 
 def main():
@@ -39,26 +34,25 @@ def main():
     print("=" * 56)
     print(f"  Device ID  : {DEVICE_ID}")
     print(f"  Server URL : {SERVER_URL}")
-    print(f"  RPI Port   : {RPI_PORT}")
+    print(f"  Mode       : Poll-based (no local server)")
     print("=" * 56)
     print()
 
-    # 1. Start the Flask server (runs in background thread)
-    logger.info("Starting Flask server...")
-    start_server()
-
-    # Give Flask a moment to bind
-    time.sleep(1)
-
-    # 2. Register with the backend
+    # 1. Register with the backend (blocks until successful)
     logger.info("Registering with backend...")
     reg_thread = threading.Thread(target=register_with_backend, daemon=True)
     reg_thread.start()
+    reg_thread.join(timeout=30)
 
-    # 3. Start heartbeat loop
+    # 2. Start heartbeat loop
     logger.info("Starting heartbeat loop...")
     hb_thread = threading.Thread(target=heartbeat_loop, daemon=True)
     hb_thread.start()
+
+    # 3. Start command polling loop
+    logger.info("Starting command poll loop...")
+    poll_thread = threading.Thread(target=command_poll_loop, daemon=True)
+    poll_thread.start()
 
     # 4. Keep main thread alive
     logger.info("RPi client is running. Press Ctrl+C to stop.")

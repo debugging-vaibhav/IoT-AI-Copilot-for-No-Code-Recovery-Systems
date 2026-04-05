@@ -1,58 +1,14 @@
 """
-Network Server/Client — exposes a Flask API for the backend to call,
-and registers this device with the backend on startup.
+Network Client — registers with the backend, polls for commands,
+and reports results. No local Flask server needed.
 """
-import threading
 import time
 import requests
-from flask import Flask, request, jsonify
 from logger import logger
-from config import SERVER_URL, DEVICE_ID, RPI_PORT, SIMULATE_HARDWARE
+from config import SERVER_URL, DEVICE_ID, SIMULATE_HARDWARE
 from control.execution_engine import execute_command
 from control.pin_manager import get_all_pin_states
 from hardware.sensor_controller import sensor_values
-
-app = Flask(__name__)
-
-
-# ───────────────────────────────────────────
-#  Endpoints the Backend calls on THIS device
-# ───────────────────────────────────────────
-
-@app.route("/", methods=["GET"])
-def health():
-    return jsonify({
-        "status": "ok",
-        "device_id": DEVICE_ID,
-        "simulated": SIMULATE_HARDWARE,
-    })
-
-
-@app.route("/status", methods=["GET"])
-def device_status():
-    """Returns current pin states and sensor readings."""
-    return jsonify({
-        "status": "ONLINE",
-        "device_id": DEVICE_ID,
-        "simulated": SIMULATE_HARDWARE,
-        "pin_states": get_all_pin_states(),
-        "sensor_readings": {str(k): v for k, v in sensor_values.items()},
-    })
-
-
-@app.route("/execute", methods=["POST"])
-def execute():
-    """
-    Receives a command from the backend and executes it.
-    Expected JSON: {"pin": 17, "action": "on"} or
-                   {"pin": 12, "action": "servo_control", "angle": 90}
-    """
-    data = request.get_json(force=True)
-    logger.info(f"Received command: {data}")
-
-    result = execute_command(data)
-    status_code = 200 if result["success"] else 400
-    return jsonify(result), status_code
 
 
 # ───────────────────────────────────────────
@@ -64,27 +20,14 @@ def register_with_backend():
     register_url = f"{SERVER_URL}/api/device/register"
     payload = {
         "device_id": DEVICE_ID,
-        "device_url": f"http://{{local_ip}}:{RPI_PORT}",
         "simulated": SIMULATE_HARDWARE,
     }
-
-    # Get local IP for the payload
-    import socket
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        local_ip = s.getsockname()[0]
-        s.close()
-    except Exception:
-        local_ip = "127.0.0.1"
-
-    payload["device_url"] = f"http://{local_ip}:{RPI_PORT}"
 
     while True:
         try:
             resp = requests.post(register_url, json=payload, timeout=5)
             if resp.status_code == 200:
-                logger.info(f"✅ Registered with backend at {SERVER_URL} (local IP: {local_ip})")
+                logger.info(f"Registered with backend at {SERVER_URL}")
                 return True
             else:
                 logger.warning(f"Backend returned {resp.status_code}, retrying in 5s...")
@@ -96,12 +39,86 @@ def register_with_backend():
         time.sleep(5)
 
 
-def start_server():
-    """Start the Flask server in a background thread."""
-    thread = threading.Thread(
-        target=lambda: app.run(host="0.0.0.0", port=RPI_PORT, debug=False, use_reloader=False),
-        daemon=True,
-    )
-    thread.start()
-    logger.info(f"🚀 RPi Flask server started on port {RPI_PORT}")
-    return thread
+# ───────────────────────────────────────────
+#  Command Polling
+# ───────────────────────────────────────────
+
+def poll_commands():
+    """Poll the backend for pending commands, execute them, report results."""
+    poll_url = f"{SERVER_URL}/api/device/{DEVICE_ID}/commands"
+    result_url = f"{SERVER_URL}/api/device/{DEVICE_ID}/commands/result"
+
+    try:
+        resp = requests.get(poll_url, timeout=5)
+        if resp.status_code != 200:
+            logger.debug(f"Poll returned {resp.status_code}")
+            return
+
+        data = resp.json()
+        commands = data.get("commands", [])
+        if not commands:
+            return
+
+        logger.info(f"Received {len(commands)} command(s) from backend")
+        results = []
+
+        for cmd in commands:
+            cmd_id = cmd.get("id", "unknown")
+            logger.info(f"Executing command {cmd_id}: {cmd}")
+
+            exec_payload = {
+                "pin": cmd.get("pin"),
+                "action": cmd.get("action"),
+            }
+            if cmd.get("angle") is not None:
+                exec_payload["angle"] = cmd["angle"]
+
+            result = execute_command(exec_payload)
+            results.append({
+                "id": cmd_id,
+                "success": result.get("success", False),
+                "message": result.get("message", ""),
+            })
+
+        # Report results back
+        if results:
+            try:
+                requests.post(result_url, json=results, timeout=5)
+            except Exception as e:
+                logger.warning(f"Failed to report command results: {e}")
+
+    except requests.exceptions.ConnectionError:
+        logger.debug("Cannot reach backend for polling")
+    except Exception as e:
+        logger.error(f"Poll error: {e}")
+
+
+# ───────────────────────────────────────────
+#  Heartbeat (includes device state)
+# ───────────────────────────────────────────
+
+def send_heartbeat():
+    """Send heartbeat with current device state to the backend."""
+    heartbeat_url = f"{SERVER_URL}/api/device/heartbeat"
+    payload = {
+        "device_id": DEVICE_ID,
+        "status": "ONLINE",
+        "device_state": {
+            "status": "ONLINE",
+            "device_id": DEVICE_ID,
+            "simulated": SIMULATE_HARDWARE,
+            "pin_states": get_all_pin_states(),
+            "sensor_readings": {str(k): v for k, v in sensor_values.items()},
+        },
+    }
+
+    try:
+        resp = requests.post(heartbeat_url, json=payload, timeout=5)
+        if resp.status_code == 200:
+            logger.debug("Heartbeat sent OK")
+        else:
+            logger.warning(f"Heartbeat returned {resp.status_code}")
+    except requests.exceptions.ConnectionError:
+        logger.warning("Heartbeat failed — backend unreachable")
+    except Exception as e:
+        logger.error(f"Heartbeat error: {e}")

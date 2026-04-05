@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import Optional, Any, Dict
+from typing import Optional, Any, Dict, List
 
 
 class HealthResponse(BaseModel):
@@ -51,14 +51,25 @@ class SystemStatus(BaseModel):
     last_updated: str = Field(..., example="2026-02-04T19:00:00")
 
 
-# ── New: Device Registration ──
+# ── Device Registration & Heartbeat ──
 
 class DeviceRegistration(BaseModel):
     device_id: str = Field(..., example="rpi-5-001")
-    device_url: str = Field(..., example="http://192.168.1.50:5000")
     simulated: bool = Field(False)
 
 
 class DeviceHeartbeat(BaseModel):
     device_id: str = Field(..., example="rpi-5-001")
     status: str = Field("ONLINE", example="ONLINE")
+    device_state: Optional[Dict[str, Any]] = Field(
+        None,
+        description="Optional live state: pin_states, sensor_readings, etc.",
+    )
+
+
+# ── Command Queue ──
+
+class CommandResult(BaseModel):
+    id: str = Field(..., example="a1b2c3d4")
+    success: bool = Field(..., example=True)
+    message: str = Field("", example="Executed on action on pin 17")

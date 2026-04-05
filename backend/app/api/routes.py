@@ -1,16 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.models.schemas import (
     HealthResponse, RobotDescription, ValidationResult, ExecutionRequest,
-    ExecutionResponse, ControlLogic, DeviceRegistration, DeviceHeartbeat
+    ExecutionResponse, ControlLogic, DeviceRegistration, DeviceHeartbeat,
+    CommandResult,
 )
 from app.services.recovery_engine import recovery_system
 from app.services.validator import validator
 from app.services.iot_interface import iot_interface
 from app.services.device_registry import (
-    register_device, update_heartbeat, get_all_devices, get_device
+    register_device, update_heartbeat, get_all_devices, get_device,
+    get_device_cached_status, dequeue_commands,
 )
 from app.db.queries import get_recovery_logs, DatabaseConnectionError
 from app.core.auth import get_current_user
+from typing import List
 
 router = APIRouter()
 
@@ -44,18 +47,18 @@ def system_status():
 @router.post("/device/register")
 def device_register(data: DeviceRegistration):
     """RPi calls this on startup to register itself."""
-    register_device(data.device_id, data.device_url, data.simulated)
+    register_device(data.device_id, data.simulated)
     return {
         "status": "registered",
         "device_id": data.device_id,
-        "message": f"Device {data.device_id} registered at {data.device_url}"
+        "message": f"Device {data.device_id} registered successfully",
     }
 
 
 @router.post("/device/heartbeat")
 def device_heartbeat(data: DeviceHeartbeat):
-    """RPi sends periodic heartbeats to stay alive in the registry."""
-    found = update_heartbeat(data.device_id, data.status)
+    """RPi sends periodic heartbeats with optional device state."""
+    found = update_heartbeat(data.device_id, data.status, data.device_state)
     if not found:
         raise HTTPException(status_code=404, detail=f"Device {data.device_id} not registered")
     return {"status": "ok"}
@@ -69,18 +72,47 @@ def device_list():
 
 @router.get("/device/{device_id}/status")
 def device_live_status(device_id: str):
-    """Proxy: fetch live status from a specific RPi device."""
+    """Return the latest status reported by the device via heartbeat."""
     dev = get_device(device_id)
     if not dev:
         raise HTTPException(status_code=404, detail=f"Device {device_id} not found")
 
-    import requests as req
-    try:
-        resp = req.get(f"{dev['device_url']}/status", timeout=5)
-        resp.raise_for_status()
-        return resp.json()
-    except Exception as e:
-        raise HTTPException(status_code=502, detail=f"Cannot reach device: {str(e)}")
+    cached = get_device_cached_status(device_id)
+    if cached:
+        return cached
+    return {
+        "status": dev["status"],
+        "device_id": device_id,
+        "message": "No detailed status reported yet",
+    }
+
+
+# ─────────────────────────────────────────────
+#  Command Queue (RPi polls these)
+# ─────────────────────────────────────────────
+
+@router.get("/device/{device_id}/commands")
+def device_poll_commands(device_id: str):
+    """RPi polls this to fetch and clear pending commands."""
+    dev = get_device(device_id)
+    if not dev:
+        raise HTTPException(status_code=404, detail=f"Device {device_id} not found")
+    commands = dequeue_commands(device_id)
+    return {"commands": commands}
+
+
+@router.post("/device/{device_id}/commands/result")
+def device_report_result(device_id: str, results: List[CommandResult]):
+    """RPi reports execution results for commands it polled."""
+    dev = get_device(device_id)
+    if not dev:
+        raise HTTPException(status_code=404, detail=f"Device {device_id} not found")
+    # Log results (for now just log, could store in DB later)
+    import logging
+    logger = logging.getLogger("uvicorn")
+    for r in results:
+        logger.info(f"Command {r.id} on {device_id}: success={r.success} — {r.message}")
+    return {"status": "ok", "received": len(results)}
 
 
 # ─────────────────────────────────────────────
@@ -126,18 +158,18 @@ def apply_recovery(request: ExecutionRequest):
 @router.post("/execute-direct")
 def execute_direct(command: dict):
     """
-    Direct command execution — sends a raw command to the RPi.
+    Direct command execution — queues a raw command for the RPi.
     E.g. {"pin": 17, "action": "on"}
-    Useful for the frontend to trigger quick actions.
     """
     success = iot_interface.send_command(
         pin=command.get("pin", 17),
-        action=command.get("action", "on")
+        action=command.get("action", "on"),
+        angle=command.get("angle"),
     )
     if success:
-        return {"success": True, "message": f"Command sent to RPi"}
+        return {"success": True, "message": "Command queued for RPi"}
     else:
-        raise HTTPException(status_code=502, detail="Could not reach RPi device")
+        raise HTTPException(status_code=502, detail="No online RPi device to queue command for")
 
 
 # ─────────────────────────────────────────────
