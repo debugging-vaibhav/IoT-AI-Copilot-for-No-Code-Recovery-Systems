@@ -4,12 +4,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # ── Model ────────────────────────────────────────────
-MODEL_PATH = os.getenv(
-    "MODEL_PATH",
-    str(BASE_DIR / "models" / "qwen2.5-1.5b-instruct-q4_k_m.gguf"),
-)
+MODEL_ID = os.getenv("MODEL_ID", "Qwen/Qwen2.5-1.5B-Instruct")
 MODEL_N_CTX = int(os.getenv("MODEL_N_CTX", "2048"))
-MODEL_N_GPU = int(os.getenv("MODEL_N_GPU", "0"))  # 0 = CPU-only, -1 = full GPU offload
 MODEL_TEMPERATURE = float(os.getenv("MODEL_TEMPERATURE", "0.1"))
 MODEL_MAX_TOKENS = int(os.getenv("MODEL_MAX_TOKENS", "512"))
 

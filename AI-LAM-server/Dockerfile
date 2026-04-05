@@ -2,13 +2,9 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install build deps for llama-cpp-python (CPU-only)
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends gcc g++ cmake && \
-    rm -rf /var/lib/apt/lists/*
-
 COPY requirements.txt .
-RUN CMAKE_ARGS="-DGGML_CUDA=OFF" pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --extra-index-url https://download.pytorch.org/whl/cpu \
+    -r requirements.txt
 
 COPY . .
 

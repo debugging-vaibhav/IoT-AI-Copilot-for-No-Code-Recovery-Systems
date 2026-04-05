@@ -31,7 +31,7 @@ class AICopilot:
         resp = httpx.post(
             f"{LAM_SERVER_URL}/process",
             json={"description": description},
-            timeout=30.0,
+            timeout=240.0,
         )
         resp.raise_for_status()
         data = resp.json()

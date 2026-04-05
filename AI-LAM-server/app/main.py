@@ -1,7 +1,7 @@
 """
 AI-LAM-Server — FastAPI microservice that converts natural-language
 hardware descriptions into validated JSON commands using
-Qwen2.5-3B Q4 + LangChain + LangGraph.
+Qwen2.5-1.5B-Instruct + HuggingFace Transformers + LangGraph.
 """
 from __future__ import annotations
 
@@ -36,8 +36,8 @@ async def lifespan(app: FastAPI):
     load_tools()
     try:
         load_llm()
-    except FileNotFoundError as exc:
-        logger.error(str(exc))
+    except Exception as exc:
+        logger.error("Failed to load model: %s", exc)
         logger.error("Server will start but /process will fail until the model is available.")
     yield
     # ── Shutdown ─────────────────────────────────────
@@ -76,7 +76,7 @@ async def process(req: ProcessRequest):
     if llm is None:
         return ProcessResponse(
             is_safe=False,
-            message="LLM model is not loaded. Place the GGUF file in models/ and restart.",
+            message="LLM model is not loaded. Check server logs and restart.",
             commands=[],
             reasoning="",
         )
